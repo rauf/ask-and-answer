@@ -1,0 +1,96 @@
+User table:     uid, email, password, first_name, last_name
+ 
+Question table:    qid, ownerId, title, description, posted_time, views, 
+ 
+Answer table:   aid, qid, ownerId, text, posted_time.
+ 
+CREATE TABLE user (
+uid INT PRIMARY KEY AUTO_INCREMENT,
+email VARCHAR(30) NOT NULL,
+password CHAR(60) NOT NULL,
+first_name VARCHAR(10) NOT NULL,
+last_name VARCHAR(10)
+);
+
+
+CREATE TABLE question (
+qid INT PRIMARY KEY AUTO_INCREMENT,
+ownerId INT NOT NULL,
+title VARCHAR(500) NOT NULL,
+description TEXT,
+posted_time DATETIME NOT NULL,
+views INT DEFAULT 0,
+
+FOREIGN KEY (ownerId) REFERENCES user (uid) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE answer (
+aid INT PRIMARY KEY AUTO_INCREMENT,
+qid INT NOT NULL,
+ownerId INT NOT NULL,
+text VARCHAR(500) NOT NULL,
+posted_time DATETIME NOT NULL,
+FOREIGN KEY (ownerId) REFERENCES user (uid) ON UPDATE CASCADE ON DELETE CASCADE,
+FOREIGN KEY (qid) REFERENCES question (qid) ON UPDATE CASCADE ON DELETE CASCADE
+);
+ 
+ 
+INSERT INTO user (email, password, first_name, last_name)
+VALUES ('abc',  'xyz', 'a', 'xyz'),
+	('abdul@gmail.com',  'abdul', 'abdul', 'rauf');
+ 
+
+
+INSERT INTO question (ownerId, title, description, posted_time, views)
+	VALUES  (1, 'Title 1', 'Description1', NOW(), 101),
+ (1, 'Title 2', 'Description 2', NOW(), 102),
+ (1, 'Title 3', 'Description 3', NOW(), 103),
+ (1, 'Title 4', 'Description 4', NOW(), 104),
+ (1, 'Title 5', 'Description 5', NOW(), 105),
+ (2, 'Title 6', 'Description 6', NOW(), 106),
+ (2, 'Title 7', 'Description 7', NOW(), 107),
+ (2, 'Title 8', 'Description 8', NOW(), 108),
+ (2, 'Title 9', 'Description 9', NOW(), 109),
+ (2, 'Title 10', 'Description 10', NOW(), 110),
+ (1, 'Title 11', 'Description 11', NOW(), 111),
+ (1, 'Title 12', 'Description 12', NOW(), 112),
+ (1, 'Title 13', 'Description 13', NOW(), 113),
+ (2, 'Title 14', 'Description 14', NOW(), 114),
+ (2, 'Title 15', 'Description 15', NOW(), 115),
+ (2, 'Title 16', 'Description 16', NOW(), 116);
+
+
+INSERT INTO answer(qid, ownerId, text, posted_time)
+VALUES (1, 1, 'Answer 1', NOW()),
+	(1, 2, 'Answer 2', NOW()),
+	(1, 1, 'Answer 3', NOW()),
+	(2, 2, 'Answer 4', NOW()),
+	(2, 2, 'Answer 5', NOW()),
+	(4, 1, 'Answer 6', NOW()),
+	(5, 1, 'Answer 7', NOW()),
+	(6, 2, 'Answer 8', NOW()),
+	(7, 1, 'Answer 9', NOW()),
+	(8, 2, 'Answer 10', NOW()),
+	(9, 1, 'Answer 11', NOW()),
+	(10, 1, 'Answer 12', NOW()),
+	(11, 1, 'Answer 13', NOW()),
+	(12, 2, 'Answer 14', NOW()),
+	(13, 2, 'Answer 15', NOW()),
+	(14, 2, 'Answer 16', NOW()),
+	(15, 2, 'Answer 17', NOW()),
+	(16, 2, 'Answer 18', NOW()),
+	(1, 1, 'Answer 19', NOW()),
+	(1, 1, 'Answer 20', NOW()),
+	(2, 2, 'Answer 21', NOW()),
+	(3, 1, 'Answer 22', NOW()),
+	(4, 2, 'Answer 23', NOW()),
+	(5, 1, 'Answer 24', NOW()),
+	(6, 2, 'Answer 25', NOW());
+
+
+
+//get number of answers for each question
+
+SELECT qid, count(*) AS count FROM answer WHERE qid IN (ARRAY OF QUESTION ID) GROUP BY qid;
+
